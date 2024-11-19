@@ -18,6 +18,10 @@ void displayMenu() {
 
 int main() {
     int choice;
+    int NoDIRS = getDBlength();
+    char DBNAME[NoDIRS][50];
+    
+
 
     do {
         system("clear || cls");
@@ -36,6 +40,12 @@ int main() {
                 break;
             case 2:
                 printf("\nYou selected: View Databases\n");
+                printf("Number of directories: %d\n", NoDIRS);
+                if(NoDIRS != -1){
+                    viewDatabases(DBNAME);
+                } else{
+                    printf("Some Error in getDBLenght() Function");
+                }
                 break;
             case 3:
                 printf("\nYou selected: Delete Database\n");
