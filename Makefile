@@ -10,7 +10,7 @@ all: $(PROGRAM)
 $(PROGRAM): $(OBJ)
 	$(CC) -o $(PROGRAM) $(OBJ)
 
-# Rule for creating object files, putting them in the ./build folder
+# Creating object files and putting them in the ./build folder
 ./build/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 

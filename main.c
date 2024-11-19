@@ -19,7 +19,7 @@ void displayMenu() {
 int main() {
     int choice;
     int NoDIRS = getDBlength();
-    char DBNAME[NoDIRS][50];
+    char DBNAME[NoDIRS][50]; // Contains Name of all the Available Databases.
     
 
 
