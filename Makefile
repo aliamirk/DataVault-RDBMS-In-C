@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall
-OBJ = ./build/main.o ./build/menu_operations.o
+OBJ = ./build/main.o ./build/menu_operations.o ./build/library-functions.o
 
 # Define the target program name and output directory
 PROGRAM = ./build/program

@@ -4,12 +4,13 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <dirent.h>
-
+#include "library-functions.h"
 
 
 
 
 void createDatabase() {
+
     char dbName[100];
     char basePath[200];
     char fullPath[300];
@@ -24,16 +25,18 @@ void createDatabase() {
         return;
     #endif
 
-    // Prompt the user for the database name
+
+    // Get database name
     printf("Enter the database name: ");
     scanf("%s", dbName);
 
     // Join the Base Path and DbName to create full path
     #ifdef _WIN32
-        snprintf(fullPath, sizeof(fullPath), "%s\\%s", basePath, dbName); // Use backslash for Windows
+        snprintf(fullPath, sizeof(fullPath), "%s\\%s", basePath, dbName);
     #else
-        snprintf(fullPath, sizeof(fullPath), "%s/%s", basePath, dbName);  // Use forward slash for macOS
+        snprintf(fullPath, sizeof(fullPath), "%s/%s", basePath, dbName);
     #endif
+
 
     // Create the folder
     #ifdef _WIN32
@@ -53,67 +56,13 @@ void createDatabase() {
 
 
 
-
-
-
-int getDBlength(){
-    int nodirs = 0;
-    DIR *directory;
-    struct dirent *entry;
-
-    directory = opendir("/Users/apple/Desktop"); // Open current directory
-    if (directory == NULL) {
-        printf("Unable to open directory.\n");
-        return -1;
-    }
-
-    // Count the number of Databases availabe 
-
-    while((entry = readdir(directory)) != NULL){
-        if (entry->d_type == DT_DIR) {
-            
-            // Skip Hidden Directories
-            if (entry->d_name[0] != '.' || (entry->d_name[1] != '\0' && entry->d_name[1] != '.')) {
-                nodirs++;
-            }
-        }
-    }
-    closedir(directory);
-    return nodirs;
-}
-
-
-
-
-void viewDatabases(char dbName[][50]) {
-    int noDirs = getDBlength(); // Get the number of directories
-    DIR *directory;
-    struct dirent *entry;
-
-    directory = opendir("/Users/apple/Desktop"); // Open current directory
-    if (directory == NULL) {
-        printf("Unable to open directory.\n");
-        return;
-    }
-
+void viewDatabases(char dbName[][50], int NoDir) {
+    getDBNames();
+    int i;
     printf("\n");
-
-    // Store in Array and Output Available Databases
-
-    int index = 0;  // to store index correctly in dbName
-    while ((entry = readdir(directory)) != NULL) {
-        if (entry->d_type == DT_DIR) {
-            // Skip Hidden Directories
-            if (entry->d_name[0] != '.' || (entry->d_name[1] != '\0' && entry->d_name[1] != '.')) {
-                strcpy(dbName[index], entry->d_name); // Store directory name in dbName
-                printf("%d. - %s\n", index + 1, dbName[index]);
-                index++;
-                if (index >= noDirs) break; // Break when we reach the expected number of directories
-            }
-        }
+    for(i=0; i<NoDir; i++){
+        printf("%d. %s\n", i+1, dbName[i]);
     }
-
-    closedir(directory);
 }
 
 
@@ -152,6 +101,19 @@ void viewDatabases(char dbName[][50]) {
 // }
 
 
+void deleteDatabase(char dbName[][50], int NoDir){
+    char Name[50];
+    int i;
+    printf("\n");
+    viewDatabases(dbName, NoDir); // Initialize Database Array
 
-void deleteDatabase();
+    // Get the name of Database to Delete
+    // printf("Enter the Name of Database to Delete: ");
+    // getchar();
+    // fgets(Name, sizeof(Name), stdin);
+    // printf("\n%s", Name);
+
+    
+}
+
 void tableMenu();

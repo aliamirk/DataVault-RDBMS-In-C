@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "menu_operations.h"
+#include "library-functions.h"
 
 void displayMenu() {
     printf("\n");
@@ -26,10 +27,9 @@ int main() {
     do {
         system("clear || cls");
 
-        // Display the menu
+        // Display Main Menu
         displayMenu();
 
-        // Read user input
         scanf("%d", &choice);
 
         // Handle the user's choice
@@ -42,13 +42,14 @@ int main() {
                 printf("\nYou selected: View Databases\n");
                 printf("Number of directories: %d\n", NoDIRS);
                 if(NoDIRS != -1){
-                    viewDatabases(DBNAME);
+                    viewDatabases(DBNAME, NoDIRS);
                 } else{
-                    printf("Some Error in getDBLenght() Function");
+                    printf("Some Error in getDBLength() Function");
                 }
                 break;
             case 3:
                 printf("\nYou selected: Delete Database\n");
+                deleteDatabase(DBNAME, NoDIRS);
                 break;
             case 4:
                 printf("\nYou selected: Tables Menu\n");
@@ -62,8 +63,8 @@ int main() {
 
         // Pause and wait for user to press Enter
         printf("\nPress Enter to continue...");
-        getchar(); // Consume newline
-        getchar(); // Wait for Enter
+        getchar(); 
+        getchar(); 
 
     } while (choice != 0);
 

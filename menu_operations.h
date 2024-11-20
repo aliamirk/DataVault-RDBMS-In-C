@@ -2,8 +2,7 @@
 #define MENU_OPERATIONS_H
 
 void createDatabase();
-void viewDatabases(char dbName[][50]);
-int getDBlength();
+void viewDatabases(char dbName[][50], int NoDir);
 void deleteDatabase();
 void tableMenu();
 
