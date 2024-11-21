@@ -23,7 +23,16 @@ int getDBlength(){
     DIR *directory;
     struct dirent *entry;
 
-    directory = opendir("/Users/apple/Desktop"); // Open current directory
+    // Open Directory
+    #ifdef _WIN32
+        directory = opendir("C:\\Users\\Desktop\\Databases"); 
+    #elif __APPLE__
+        directory = opendir("/Users/apple/Desktop/Databases");
+    #else
+        printf("Error 102: Unsupported operating system. [library_functions.c line 60]\n");
+        return;
+    #endif
+
     if (directory == NULL) {
         printf("Unable to open directory.\n");
         return -1;
@@ -52,7 +61,17 @@ void getDBNames(char dbName[][50]){
     DIR *directory;
     struct dirent *entry;
 
-    directory = opendir("/Users/apple/Desktop"); // Open current directory
+    // Open Directory
+    #ifdef _WIN32
+        directory = opendir("C:\\Users\\Desktop\\Databases"); 
+    #elif __APPLE__
+        directory = opendir("/Users/apple/Desktop/Databases");
+    #else
+        printf("Error 102: Unsupported operating system. [library_functions.c line 60]\n");
+        return;
+    #endif
+
+    
     if (directory == NULL) {
         printf("Unable to open directory.\n");
         return;
