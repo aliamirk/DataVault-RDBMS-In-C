@@ -3,6 +3,6 @@
 
 void getDBNames(); // Stores Availables Databases in Array
 int getDBlength(); // Returns No of Databases Avaiable
-
+void displayMenu(); // Display the Main Menu
 
 #endif

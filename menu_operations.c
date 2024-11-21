@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <unistd.h>
 #include "library-functions.h"
 
 
@@ -26,20 +27,20 @@ void createDatabase() {
     #endif
 
 
-    // Get database name
+    // Get Database name
     printf("Enter the database name: ");
     scanf("%s", dbName);
 
     // Join the Base Path and DbName to create full path
     #ifdef _WIN32
-        snprintf(fullPath, sizeof(fullPath), "%s\\%s", basePath, dbName);
+        snprintf(fullPath, sizeof(fullPath), "%s\\%s", basePath, dbName); 
     #else
         snprintf(fullPath, sizeof(fullPath), "%s/%s", basePath, dbName);
     #endif
 
 
     // Create the folder
-    #ifdef _WIN32
+    #ifdef _WIN32 
         if (_mkdir(fullPath) == 0) {
             printf("New Database '%s' created successfully at: %s\n", dbName, fullPath);
         } else {
@@ -102,17 +103,18 @@ void viewDatabases(char dbName[][50], int NoDir) {
 
 
 void deleteDatabase(char dbName[][50], int NoDir){
-    char Name[50];
-    int i;
+    char path[100]; 
+    int db;
     printf("\n");
     viewDatabases(dbName, NoDir); // Initialize Database Array
 
     // Get the name of Database to Delete
-    // printf("Enter the Name of Database to Delete: ");
-    // getchar();
-    // fgets(Name, sizeof(Name), stdin);
-    // printf("\n%s", Name);
-
+    printf("\nSelect the Database to Delete: ");
+    getchar();
+    scanf("%d", &db);
+    printf("\nYou selected: %s", dbName[db-1]);
+    
+    // Removing the Directory
     
 }
 

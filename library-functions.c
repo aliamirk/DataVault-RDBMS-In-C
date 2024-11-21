@@ -5,6 +5,19 @@
 #include <sys/types.h>
 #include <dirent.h>
 
+void displayMenu() {
+    printf("\n");
+    printf(" ---------------------------------------------------\n");
+    printf(" |            Database Management System           |\n");
+    printf(" |-------------------------------------------------|\n");
+    printf(" | 1. Create Database                              |\n");
+    printf(" | 2. View Databases                               |\n");
+    printf(" | 3. Delete Database                              |\n");
+    printf(" | 4. Tables Menu                                  |\n");
+    printf(" ---------------------------------------------------\n");
+    printf("\nEnter your choice: ");
+}
+
 int getDBlength(){
     int nodirs = 0;
     DIR *directory;
