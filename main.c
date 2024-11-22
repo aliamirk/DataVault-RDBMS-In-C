@@ -50,7 +50,7 @@ int main() {
                 break;
             case 0:
                 return 0;
-                break;    
+                break;  
             default:
                 return 0;
         }

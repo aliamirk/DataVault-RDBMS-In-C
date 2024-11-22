@@ -120,7 +120,7 @@ void deleteDatabase(char dbName[][50], int NoDir) {
         }
 
         // Attempt to delete the file
-        printf("Deleting file: %s\n", path);
+        printf("Deleting Table: %s\n", path);
         if (unlink(path) != 0) {
             perror("Error deleting file");
         }
