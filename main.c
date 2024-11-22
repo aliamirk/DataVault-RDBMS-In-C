@@ -23,6 +23,10 @@ int main() {
             case 1:
                 printf("\nYou selected: Create Database\n");
                 createDatabase();
+                printf("\nPress Enter to continue...");
+                getchar(); 
+                getchar();
+                main();
                 break;
             case 2:
                 printf("\nYou selected: View Databases\n");
@@ -36,6 +40,10 @@ int main() {
             case 3:
                 printf("\nYou selected: Delete Database\n");
                 deleteDatabase(DBNAME, NoDIRS);
+                printf("\nPress Enter to continue...");
+                getchar(); 
+                getchar();
+                main();
                 break;
             case 4:
                 printf("\nYou selected: Tables Menu\n");

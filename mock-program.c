@@ -8,6 +8,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include "library-functions.h"
 
 
 void displayMenu() {
@@ -270,3 +271,77 @@ void deleteDatabase(char dbName[][50], int NoDir){
 }
 
 void tableMenu();
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <dirent.h>
+
+void deleteDatabase(char dbName[][50], int NoDir) {
+    printf("\nHere\n");
+    struct dirent *entry;
+    char path[150], dbPath[100];
+    int db;
+
+    // View available databases
+    // viewDatabases(dbName, NoDir); 
+
+    // Get the name of the database to delete
+    printf("\nSelect the Database to Delete: ");
+    scanf("%d", &db);
+    if (db < 1 || db > NoDir) {
+        printf("Invalid database selection.\n");
+        return;
+    }
+    printf("\nYou selected: %s\n", dbName[db - 1]);
+
+    // Set the base directory path based on the operating system
+    #ifdef _WIN32
+        snprintf(dbPath, sizeof(dbPath), "C:\\Users\\Desktop\\Databases\\%s", dbName[db - 1]);
+    #elif __APPLE__
+        snprintf(dbPath, sizeof(dbPath), "/Users/apple/Desktop/Databases/%s", dbName[db - 1]);
+    #else
+        printf("Error: Unsupported operating system.\n");
+        return;
+    #endif
+
+    // Open the directory
+    DIR *dir = opendir(dbPath);
+    if (!dir) {
+        perror("Unable to open directory");
+        return;
+    }
+
+    // Delete all files in the directory
+    while ((entry = readdir(dir)) != NULL) {
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+            continue;
+        }
+
+        // Construct the full path for each file
+        snprintf(path, sizeof(path), "%s/%s", dbPath, entry->d_name);
+
+        // Check if it's a directory
+        if (entry->d_type == DT_DIR) {
+            printf("Cannot delete nested directories in this implementation: %s\n", path);
+            continue;
+        }
+
+        // Attempt to delete the file
+        printf("Deleting file: %s\n", path);
+        if (unlink(path) != 0) {
+            perror("Error deleting file");
+        }
+    }
+
+    closedir(dir);
+
+    // Remove the now-empty directory
+    if (rmdir(dbPath) == 0) {
+        printf("Database '%s' has been deleted successfully.\n", dbName[db - 1]);
+    } else {
+        perror("Error deleting database folder");
+    }
+}
+
