@@ -4,6 +4,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <unistd.h>
+#include "library-functions.h"
 
 void displayMenu() {
     printf("\n");
@@ -55,7 +57,7 @@ int getDBlength(){
     return nodirs;
 }
 
-
+// This function returns the populates the dbName array with the cuurently availabe databases;
 void getDBNames(char dbName[][50]){
     int noDirs = getDBlength(); // Get the number of directories
     DIR *directory;
@@ -95,4 +97,27 @@ void getDBNames(char dbName[][50]){
     }
 
     closedir(directory);
+}
+
+
+// This function returns a string which contains the constructed path of the table name that is to be created.
+char* pathConstructor(char TableName[]){
+
+    char *fullPath = malloc(300 * sizeof(char));
+
+    if (fullPath == NULL) {
+        printf("Memory allocation failed!\n");
+        return NULL;
+    }
+
+    // Join the Base Path and DbName to create full path
+    #ifdef _WIN32
+        snprintf(fullPath, 300, "%s\\%s.txt", "C:\\Users\\Desktop\\Databases", TableName); 
+    #else
+        snprintf(fullPath, 300, "%s/%s.txt", "/Users/apple/Desktop/Databases", TableName);
+    #endif
+
+    printf("\n%s\n", fullPath);
+    return fullPath;
+
 }

@@ -9,9 +9,11 @@ int main() {
     int choice;
     int NoDIRS = getDBlength();
     char DBNAME[NoDIRS][50]; // Contains Name of all the Available Databases.
+    char *path = pathConstructor("name");
+    free(path);
 
     do {
-        system("clear || cls");
+        // system("clear || cls");
 
         // Display Main Menu
         displayMenu();
