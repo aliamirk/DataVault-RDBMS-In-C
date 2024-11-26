@@ -109,7 +109,8 @@ void getDBNames(char dbName[][50]){
 
 
 // This function returns a string which contains the constructed path of the table name that is to be created.
-char* TablePathConstructor(char TableName[]){
+// Remmmeber to free().
+char* TablePathConstructor(char DBName[], char TableName[]){
 
     char *fullPath = malloc(300 * sizeof(char));
 
@@ -120,9 +121,9 @@ char* TablePathConstructor(char TableName[]){
 
     // Join the Base Path and DbName to create full path
     #ifdef _WIN32
-        snprintf(fullPath, 300, "%s\\%s.txt", "C:\\Users\\Desktop\\Databases", TableName); 
+        snprintf(fullPath, 300, "%s\\%s\\%s.txt", "C:\\Users\\Desktop\\Databases", DBName, TableName); 
     #else
-        snprintf(fullPath, 300, "%s/%s.txt", "/Users/apple/Desktop/Databases", TableName);
+        snprintf(fullPath, 300, "%s/%s/%s.txt", "/Users/apple/Desktop/Databases", DBName, TableName);
     #endif
 
     printf("\n%s\n", fullPath);

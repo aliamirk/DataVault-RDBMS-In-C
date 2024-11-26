@@ -56,19 +56,27 @@ void createDatabase() {
 }
 
 void viewDatabases(char dbName[][50], int N) {
-    getDBNames(dbName);
-    int i;
-    printf("in ViewDB(), NoDir: %d\n", N);
-    for(i=0; i<N; i++){
-        printf("%d. %s\n", i+1, dbName[i]);
+    getDBNames(dbName);  // Fetch the database names into the array
+
+    if (N <= 0) {
+        printf("No databases found. Please create a database first.\n");
+        return;
     }
+
+    printf("Listing Available Databases:\n");
+    printf("-----------------------------\n");
+
+    // Display the number of available databases
+    printf("Total Databases: %d\n\n", N);
+    
+    // Loop through each database and display its name
+    for (int i = 0; i < N; i++) {
+        printf("%d. %s\n", i + 1, dbName[i]);
+    }
+
+    printf("\nSelect a database to view its tables or perform other operations.\n");
 }
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <dirent.h>
 
 void deleteDatabase(char dbName[][50], int NoDir) {
     printf("\nHere\n");

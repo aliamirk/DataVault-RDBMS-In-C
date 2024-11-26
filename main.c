@@ -54,6 +54,24 @@ int main() {
                 printf("\nYou selected: Tables Menu\n");
                 displayTables(TABLE_NAMES, NoTables);
                 break;
+            case 6:
+                printf("\nYou selected: Create Table\n");
+                if(NoDIRS != -1){
+                    viewDatabases(DB_NAMES, NoDIRS);
+                } else{
+                    printf("Some Error in getDBLength() Function");
+                }
+                createTable();
+                break;
+            case 7:
+                printf("\nYou selected: Create Table\n");
+                if(NoDIRS != -1){
+                    viewDatabases(DB_NAMES, NoDIRS);
+                } else{
+                    printf("Some Error in getDBLength() Function");
+                }
+                deleteTable();
+                break;
             case 0:
                 return 0;
                 break;  

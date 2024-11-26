@@ -36,19 +36,66 @@ int displayTables(char tables[][200], int tablelength) {
 
 void createTable(){
 
+    // Call viewDatabases() in main
+    getchar();
     char dbName[20];
-    printf("Enter Name of the Table: ");
+    printf("\nEnter Name of the Database: ");
     if (fgets(dbName, sizeof(dbName), stdin)) {
         // Removing the newline character if present
         dbName[strcspn(dbName, "\n")] = '\0';
     }
 
     char tname[20];
-    printf("Enter Name of the Table: ");
+    printf("\nEnter Name of the Table: ");
     if (fgets(tname, sizeof(tname), stdin)) {
         // Removing the newline character if present
         tname[strcspn(tname, "\n")] = '\0';
     }
 
+    char *tablepath = TablePathConstructor(dbName, tname);
+    printf("\nNew Table Created at '%s'", tablepath);
+    
 
+
+    // Creating the File
+    FILE *fp;
+    fp = fopen(tablepath, "w"); 
+
+    if (fp == NULL) {
+        // Error opening the file
+        printf("Error 106: Table '%s' could no be created. [table_operations.c line 66]\n", tname);
+    }
+
+    fclose(fp);
+    printf("Table '%s' has been successfully created at '%s'", tname, tablepath);
+    free(tablepath);
+
+}
+
+void deleteTable(){
+
+    // Call viewDatabases() in main
+    getchar();
+    char dbName[20];
+    printf("\nEnter Name of the Database: ");
+    if (fgets(dbName, sizeof(dbName), stdin)) {
+        // Removing the newline character if present
+        dbName[strcspn(dbName, "\n")] = '\0';
+    }
+
+    char tname[20];
+    printf("\nEnter Name of the Table: ");
+    if (fgets(tname, sizeof(tname), stdin)) {
+        // Removing the newline character if present
+        tname[strcspn(tname, "\n")] = '\0';
+    }
+
+    char *tablepath = TablePathConstructor(dbName, tname);
+    printf("\nDeleting Table '%s'... ... .. .\n", tablepath);
+
+    if (remove(tablepath) == 0){
+        printf("File '%s' deleted successfully.", tname);
+    } else {
+        perror("\nError 107: Table '%s' cannot be deleted. [table_operations.c line 99]");
+    }
 }
