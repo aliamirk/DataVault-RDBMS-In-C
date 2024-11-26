@@ -2,7 +2,7 @@
 #define TABLE_OPERATIONS_H
 
 void createTable();
-void displayTables();
+int displayTables(char tables[][200], int tablelength);
 void deleteTable();
 
 #endif

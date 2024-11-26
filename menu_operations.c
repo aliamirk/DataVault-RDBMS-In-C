@@ -6,6 +6,7 @@
 #include <dirent.h>
 #include <unistd.h>
 #include "library-functions.h"
+#include "table_operations.h"
 
 
 

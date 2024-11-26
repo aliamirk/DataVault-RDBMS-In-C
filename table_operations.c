@@ -5,7 +5,34 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <unistd.h>
+#include "menu_operations.h"
 #include "library-functions.h"
+
+// Displays the Available Tables and returns the table user selected.
+int displayTables(char tables[][200], int tablelength) {
+    getTableNames(tables);
+    if (tablelength <= 0) {
+        printf("No tables found.\n");
+        return 0;
+    }
+
+    printf("\nAvailable Tables:\n");
+    for (int i = 0; i < tablelength; i++) {
+        if (strlen(tables[i]) > 0) { // Ensure the string is not empty
+            printf("%d - Table: %s\n", i + 1, tables[i]);
+        } else {
+            printf("%d - (Empty Slot)\n", i + 1); // Debugging empty slots
+        }
+    }
+    int selection;
+    printf("\nSelect any Table to Progress further - (1 - %d): ", tablelength);
+    scanf("%d", &selection);
+    printf("\nYou Selected '%s'\n", tables[selection-1]);
+    return selection-1; // Indicate success
+}
+
+
+
 
 void createTable(){
 
@@ -23,6 +50,5 @@ void createTable(){
         tname[strcspn(tname, "\n")] = '\0';
     }
 
-    
 
 }
