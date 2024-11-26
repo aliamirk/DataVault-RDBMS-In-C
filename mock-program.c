@@ -345,3 +345,220 @@ void deleteDatabase(char dbName[][50], int NoDir) {
     }
 }
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <unistd.h>
+#include "menu_operations.h"
+#include "library-functions.h"
+
+// Displays the Available Tables and returns the table user selected.
+int displayTables(char tables[][200], int tablelength) {
+    // getTableNames(tables);
+    if (tablelength <= 0) {
+        printf("No tables found.\n");
+        return 0;
+    }
+
+    printf("\nAvailable Tables:\n");
+    for (int i = 0; i < tablelength; i++) {
+        if (strlen(tables[i]) > 0) { // Ensure the string is not empty
+            printf("%d - Table: %s\n", i + 1, tables[i]);
+        } else {
+            printf("%d - (Empty Slot)\n", i + 1); // Debugging empty slots
+        }
+    }
+    int selection;
+    printf("\nSelect any Table to Progress further - (1 - %d): ", tablelength);
+    scanf("%d", &selection);
+    printf("\nYou Selected '%s'\n", tables[selection-1]);
+    return selection-1; // Indicate success
+}
+
+
+
+
+void createTable(){
+
+    // Call viewDatabases() in main
+    getchar();
+    char dbName[20];
+    printf("\nEnter Name of the Database: ");
+    if (fgets(dbName, sizeof(dbName), stdin)) {
+        // Removing the newline character if present
+        dbName[strcspn(dbName, "\n")] = '\0';
+    }
+
+    char tname[20];
+    printf("\nEnter Name of the Table: ");
+    if (fgets(tname, sizeof(tname), stdin)) {
+        // Removing the newline character if present
+        tname[strcspn(tname, "\n")] = '\0';
+    }
+
+    char *tablepath = TablePathConstructor(dbName, tname);
+    printf("\nNew Table Created at '%s'", tablepath);
+    
+
+
+    // Creating the File
+    FILE *fp;
+    fp = fopen(tablepath, "w"); 
+
+    if (fp == NULL) {
+        // Error opening the file
+        printf("Error 106: Table '%s' could no be created. [table_operations.c line 66]\n", tname);
+    }
+
+    fclose(fp);
+    printf("Table '%s' has been successfully created at '%s'", tname, tablepath);
+    free(tablepath);
+
+}
+
+void deleteTable(){
+
+    // Call viewDatabases() in main
+    getchar();
+    char dbName[20];
+    printf("\nEnter Name of the Database: ");
+    if (fgets(dbName, sizeof(dbName), stdin)) {
+        // Removing the newline character if present
+        dbName[strcspn(dbName, "\n")] = '\0';
+    }
+
+    char tname[20];
+    printf("\nEnter Name of the Table: ");
+    if (fgets(tname, sizeof(tname), stdin)) {
+        // Removing the newline character if present
+        tname[strcspn(tname, "\n")] = '\0';
+    }
+
+    char *tablepath = TablePathConstructor(dbName, tname);
+    printf("\nDeleting Table '%s'... ... .. .\n", tablepath);
+
+    if (remove(tablepath) == 0){
+        printf("File '%s' deleted successfully.", tname);
+    } else {
+        perror("\nError 107: Table '%s' cannot be deleted. [table_operations.c line 99]");
+    }
+}
+
+
+
+// Stores the table names in a Array
+int getTableLength(){
+
+    int NoTables = 0;
+    char basePath[200];
+    DB_PathConstructor(basePath); // Get basePath of DB Directory
+
+    if (strlen(basePath) > 0) {
+        printf("Base Path: %s\n", basePath);
+    } else {
+        printf("Error 105: Base Path could not be constructed. [library_functions.c line 150]\n");
+    }
+
+    DIR *mainDir, *subDir;
+    struct dirent *entry, *subEntry;
+
+    // Open the main directory
+    mainDir = opendir(basePath);
+    if (mainDir == NULL) {
+        perror("Error opening main directory");
+        return -1;
+    }
+
+    printf("Counting Tables \n\n");
+
+    // Traverse each subdirectory in the main directory
+    while ((entry = readdir(mainDir)) != NULL) {
+        if (entry->d_type == DT_DIR) { // Check if entry is a directory
+            // Skip the current directory (.) and parent directory (..)
+            if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+                continue;
+            }
+
+            // Construct the path to the subdirectory
+            char subDirPath[300];
+            snprintf(subDirPath, sizeof(subDirPath), "%s/%s", basePath, entry->d_name);
+
+            // Open the subdirectory
+            subDir = opendir(subDirPath);
+            if (subDir == NULL) {
+                perror("Error opening subdirectory");
+                continue;
+            }
+
+            // Traverse files in the subdirectory
+            while ((subEntry = readdir(subDir)) != NULL) {
+                // Check if the file has a .txt extension
+                if (subEntry->d_type == DT_REG && strstr(subEntry->d_name, ".txt") != NULL) {
+                    // Print the full path to the .txt file
+                    NoTables +=1;
+                }
+            }
+
+            closedir(subDir);
+        }
+    }
+    closedir(mainDir);
+
+    return NoTables;
+}
+
+
+void getTableNames(char tableName[][200], int tablesLength) {
+    int index = 0; // Keep track of the number of tables found
+    char basePath[200];
+    DB_PathConstructor(basePath);
+
+    if (strlen(basePath) == 0) {
+        printf("Error: Base Path could not be constructed.\n");
+        return;
+    }
+
+    DIR *mainDir = opendir(basePath);
+    if (mainDir == NULL) {
+        perror("Error opening main directory");
+        return;
+    }
+
+    struct dirent *entry, *subEntry;
+
+    // Traverse subdirectories in the main directory
+    while ((entry = readdir(mainDir)) != NULL) {
+        if (entry->d_name[0] == '.') {
+            continue; // Skip hidden entries
+        }
+
+        char subDirPath[300];
+        snprintf(subDirPath, sizeof(subDirPath), "%s/%s", basePath, entry->d_name); // Safely construct subdirectory path
+
+        DIR *subDir = opendir(subDirPath);
+        if (subDir == NULL) {
+            continue; // Skip if unable to open subdirectory
+        }
+
+        // Traverse files in the subdirectory
+        while ((subEntry = readdir(subDir)) != NULL) {
+            if (subEntry->d_name[0] == '.' || index >= tablesLength) {
+                continue; // Skip hidden files or if array is full
+            }
+
+            // Check if file has a .txt extension
+            if (strstr(subEntry->d_name, ".txt") != NULL) {
+                char *path = strstr(subDirPath, "/Databases") ? strstr(subDirPath, "/Databases") : strstr(subDirPath, "\\Databases");
+                snprintf(tableName[index], sizeof(tableName[index]), "%s/%s", path, subEntry->d_name); // Safely format and store
+                index++;
+            }
+        }
+
+        closedir(subDir);
+    }
+
+    closedir(mainDir);
+}

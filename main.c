@@ -62,6 +62,9 @@ int main() {
                     printf("Some Error in getDBLength() Function");
                 }
                 createTable();
+                printf("\nPress Enter To Return To Main Menu...");
+                getchar();
+                main();
                 break;
             case 7:
                 printf("\nYou selected: Create Table\n");
@@ -71,6 +74,9 @@ int main() {
                     printf("Some Error in getDBLength() Function");
                 }
                 deleteTable();
+                printf("\nPress Enter To Return To Main Menu...");
+                getchar();
+                main();
                 break;
             case 0:
                 return 0;
