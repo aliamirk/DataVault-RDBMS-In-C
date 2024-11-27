@@ -10,23 +10,42 @@
 
 void displayMenu() {
     printf("\n");
-    printf(" ---------------------------------------------------\n");
-    printf(" |            Database Management System           |\n");
-    printf(" |-------------------------------------------------|\n");
-    printf(" | 1. Create Database                              |\n");
-    printf(" | 2. View Databases                               |\n");
-    printf(" | 3. Delete Database                              |\n");
-    printf(" ---------------------------------------------------\n");
-    printf(" |                     Tables Menu                 |\n");
-    printf(" ---------------------------------------------------\n");
-    printf(" | 5. Display Table                                |\n");
-    printf(" | 6. Create Table                                 |\n");
-    printf(" | 7. Delete Table                                 |\n");
-    printf(" ---------------------------------------------------\n");
-    printf(" | 0. Exit.                                        |\n");
-    printf(" ---------------------------------------------------\n");
+    printf(" =============================================================\n");
+    printf(" |                                                           |\n");
+    printf(" |                DATABASE MANAGEMENT SYSTEM                 |\n");
+    printf(" |                                                           |\n");
+    printf(" =============================================================\n");
+    printf(" |                                                           |\n");
+    printf(" |                    1. Create Database                     |\n");
+    printf(" |                    2. View Databases                      |\n");
+    printf(" |                    3. Delete Database                                        |\n");
+    printf(" |                                                           |\n");
+    printf(" -------------------------------------------------------------\n");
+    printf(" |                        Tables Menu                        |\n");
+    printf(" -------------------------------------------------------------\n");
+    printf(" |                                                           |\n");
+    printf(" |                    4. Display Tables                      |\n");
+    printf(" |                    5. Create Table                        |\n");
+    printf(" |                    6. Delete Table                        |\n");
+    printf(" |                                                           |\n");
+    printf(" -------------------------------------------------------------\n");
+    printf(" |                       Records Menu                        |\n");
+    printf(" -------------------------------------------------------------\n");
+    printf(" |                                                           |\n");
+    printf(" |                   7.  Display Records                     |\n");
+    printf(" |                   8.  Add a New Record                    |\n");
+    printf(" |                   9.  Update a Record                     |\n");
+    printf(" |                   10. Delete a Record                     |\n");
+    printf(" |                                                           |\n");
+    printf(" =============================================================\n");
+    printf(" |                                                           |\n");
+    printf(" | 0. Exit                                                   |\n");
+    printf(" |                                                           |\n");
+    printf(" =============================================================\n");
     printf("\nEnter your choice: ");
 }
+
+
 
 int getDBlength(){
     int nodirs = 0;

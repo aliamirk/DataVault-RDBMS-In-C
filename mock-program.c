@@ -562,3 +562,120 @@ void getTableNames(char tableName[][200], int tablesLength) {
 
     closedir(mainDir);
 }
+
+
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include "menu_operations.h"
+#include "library-functions.h"
+#include "table_operations.h"
+
+int main() {
+    int choice;
+
+    do {
+        // Dynamically update the number of databases and tables
+        int NoDIRS = getDBlength();
+        int NoTables = getTableLength();
+        char TABLE_NAMES[NoTables][200];
+        char DB_NAMES[NoDIRS][50];
+
+        // Clear the screen (cross-platform)
+        // system("clear || cls");
+
+        // Display Main Menu
+        displayMenu();
+
+        // Get user input for menu choice
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        // Handle the user's choice
+        switch (choice) {
+            case 1:
+                printf("\nYou selected: Create Database\n");
+                createDatabase();
+                printf("\nDatabase created successfully. Press Enter to continue...");
+                getchar(); 
+                getchar(); // To handle lingering newline
+                break;
+
+            case 2:
+                printf("\nYou selected: View Databases\n");
+                if (NoDIRS != -1) {
+                    printf("\nNumber of databases: %d\n", NoDIRS);
+                    // viewDatabases(DB_NAMES, NoDIRS);
+                } else {
+                    printf("\nError: Unable to fetch database count.\n");
+                }
+                printf("\nPress Enter to continue...");
+                getchar(); 
+                getchar();
+                break;
+
+            case 3:
+                printf("\nYou selected: Delete Database\n");
+                if (NoDIRS > 0) {
+                    deleteDatabase(DB_NAMES, NoDIRS);
+                } else {
+                    printf("\nNo databases available to delete.\n");
+                }
+                printf("\nPress Enter to continue...");
+                getchar(); 
+                getchar();
+                break;
+
+            case 4:
+                printf("\nYou selected: Tables Menu\n");
+                if (NoTables > 0) {
+                    displayTables(TABLE_NAMES, NoTables);
+                } else {
+                    printf("\nNo tables available to display.\n");
+                }
+                printf("\nPress Enter to continue...");
+                getchar(); 
+                getchar();
+                break;
+
+            case 6:
+                printf("\nYou selected: Create Table\n");
+                if (NoDIRS != -1 && NoDIRS > 0) {
+                   // viewDatabases(DB_NAMES, NoDIRS);
+                    createTable();
+                } else {
+                    printf("\nError: No databases available or unable to fetch database count.\n");
+                }
+                printf("\nPress Enter to continue...");
+                getchar();
+                getchar();
+                break;
+
+            case 7:
+                printf("\nYou selected: Delete Table\n");
+                if (NoDIRS != -1 && NoDIRS > 0) {
+                    // viewDatabases(DB_NAMES, NoDIRS);
+                    deleteTable();
+                } else {
+                    printf("\nError: No databases available or unable to fetch database count.\n");
+                }
+                printf("\nPress Enter to continue...");
+                getchar();
+                getchar();
+                break;
+
+            case 0:
+                printf("\nExiting the program. Goodbye!\n");
+                break;
+
+            default:
+                printf("\nInvalid choice. Please select a valid option.\n");
+                printf("\nPress Enter to continue...");
+                getchar();
+                getchar();
+                break;
+        }
+    } while (choice != 0);
+
+    return 0;
+}
