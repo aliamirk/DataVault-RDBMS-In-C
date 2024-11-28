@@ -161,7 +161,6 @@ void createTable() {
 
     // Construct the Table Path (add .csv extension)
     char *tablepath = TablePathConstructor(dbName, tname);
-    strcat(tablepath, ".csv");
     printf("\nNew CSV Table will be created at '%s'\n", tablepath);
 
     // Creating the CSV File

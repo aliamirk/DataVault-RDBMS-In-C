@@ -212,7 +212,7 @@ int getTableLength(){
             // Traverse files in the subdirectory
             while ((subEntry = readdir(subDir)) != NULL) {
                 // Check if the file has a .txt extension
-                if (subEntry->d_type == DT_REG && strstr(subEntry->d_name, ".txt") != NULL) {
+                if (subEntry->d_type == DT_REG && strstr(subEntry->d_name, ".csv") != NULL) {
                     // Print the full path to the .txt file
                     NoTables +=1;
                 }
@@ -266,7 +266,7 @@ void getTableNames(char tableName[][200], int tablesLength) {
             }
 
             // Check if file has a .txt extension
-            if (strstr(subEntry->d_name, ".txt") != NULL) {
+            if (strstr(subEntry->d_name, ".csv") != NULL) {
                 char *path = strstr(subDirPath, "/Databases") ? strstr(subDirPath, "/Databases") : strstr(subDirPath, "\\Databases");
                 snprintf(tableName[index], sizeof(tableName[index]), "%s/%s", path, subEntry->d_name); // Safely format and store
                 index++;
@@ -277,4 +277,12 @@ void getTableNames(char tableName[][200], int tablesLength) {
     }
 
     closedir(mainDir);
+}
+
+
+void clearInputBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {
+        // Discard characters until newline or end of file
+    }
 }

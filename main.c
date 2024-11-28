@@ -4,12 +4,14 @@
 #include "menu_operations.h"
 #include "library-functions.h"
 #include "table_operations.h"
+#include "record_operations.h"
 
 
 int main() {
     int choice;
     int NoDIRS = getDBlength();
     int NoTables = getTableLength();
+    printf("\ntable length: %d\n", NoTables);
     char TABLE_NAMES[NoTables][200];
     char DB_NAMES[NoDIRS][50]; // Contains Name of all the Available Databases.
     // char *path = TablePathConstructor("Name");
@@ -54,7 +56,7 @@ int main() {
                 printf("\nYou selected: Tables Menu\n");
                 displayTables(TABLE_NAMES, NoTables);
                 break;
-            case 6:
+            case 5:
                 printf("\nYou selected: Create Table\n");
                 if(NoDIRS != -1){
                     viewDatabases(DB_NAMES, NoDIRS);
@@ -66,8 +68,8 @@ int main() {
                 getchar();
                 main();
                 break;
-            case 7:
-                printf("\nYou selected: Create Table\n");
+            case 6:
+                printf("\nYou selected: Delete Table\n");
                 if(NoDIRS != -1){
                     viewDatabases(DB_NAMES, NoDIRS);
                 } else{
@@ -77,6 +79,14 @@ int main() {
                 printf("\nPress Enter To Return To Main Menu...");
                 getchar();
                 main();
+                break;
+            case 7:
+                printf("\n You Selected: Display Records");
+                displayRecords(TABLE_NAMES, NoTables);
+                break;
+            case 8:
+                printf("\n You Selected: Create Records");
+                createRecord(TABLE_NAMES, NoTables);
                 break;
             case 0:
                 return 0;

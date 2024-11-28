@@ -8,5 +8,6 @@ char* TablePathConstructor(char dbName[], char TableName[]); // Returns pointer 
 void DB_PathConstructor(char* basePath);
 int getTableLength();
 void getTableNames(char tableName[][200]);
+void clearInputBuffer();
 
 #endif
