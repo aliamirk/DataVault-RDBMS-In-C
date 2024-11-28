@@ -140,9 +140,9 @@ char* TablePathConstructor(char DBName[], char TableName[]){
 
     // Join the Base Path and DbName to create full path
     #ifdef _WIN32
-        snprintf(fullPath, 300, "%s\\%s\\%s.txt", "C:\\Users\\Desktop\\Databases", DBName, TableName); 
+        snprintf(fullPath, 300, "%s\\%s\\%s.csv", "C:\\Users\\Desktop\\Databases", DBName, TableName); 
     #else
-        snprintf(fullPath, 300, "%s/%s/%s.txt", "/Users/apple/Desktop/Databases", DBName, TableName);
+        snprintf(fullPath, 300, "%s/%s/%s.csv", "/Users/apple/Desktop/Databases", DBName, TableName);
     #endif
 
     printf("\n%s\n", fullPath);
