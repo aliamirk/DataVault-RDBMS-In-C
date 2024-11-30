@@ -172,7 +172,77 @@ void createRecord(char TABLENAMES[][200], int NoTables) {
 
 
 
+// Function to delete a record from a CSV file
+void deleteRecord(char TABLENAMES[][200], int NoTables) {
+    int tableSelected = displayTables(TABLENAMES, NoTables); // Get table index
+    char tablePath[300];
 
-void deleteRecord();
-void updateRecord();
+    // Construct the full path of the CSV file
+    snprintf(tablePath, sizeof(tablePath), "%s%s", "/Users/apple/Desktop/", TABLENAMES[tableSelected]);
+
+    // Get Search ID from the User
+    clearInputBuffer();
+    char searchID[50];
+    printf("\nEnter ID of the Record to Delete: ");
+    fgets(searchID, sizeof(searchID), stdin);
+    searchID[strcspn(searchID, "\n")] = '\0'; // Remove newline character
+
+    // Open the original file in read mode
+    FILE *file = fopen(tablePath, "r");
+    if (file == NULL) {
+        printf("Error: Could not open file %s.\n", tablePath);
+        return;
+    }
+
+    // Open a temporary file to write updated content
+    FILE *tempFile = fopen("temp.csv", "w");
+    if (tempFile == NULL) {
+        printf("Error: Could not create a temporary file.\n");
+        fclose(file);
+        return;
+    }
+
+    char line[1000];      // Buffer for reading lines
+    char lineCopy[1000];  // Copy of the line for tokenization
+    int isDeleted = 0;    // Flag to track if the record was deleted
+    int lineNum = 0;
+
+    while (fgets(line, sizeof(line), file)) {
+        lineNum++;
+        strcpy(lineCopy, line); // Create a copy of the line for tokenization
+
+        if (lineNum == 1) {
+            // Write the schema (first row) to the temp file
+            fprintf(tempFile, "%s", line);
+            continue;
+        }
+
+        // Extract the ID (first value) from the copied line
+        char *recordID = strtok(lineCopy, ",");
+        if (recordID && strcmp(recordID, searchID) == 0) {
+            // Match found, skip writing this line to the temp file
+            isDeleted = 1;
+            printf("Record with ID %s found and deleted.\n", searchID);
+            continue;
+        }
+
+        // Write the unmodified line to the temp file
+        fprintf(tempFile, "%s", line);
+    }
+
+    fclose(file);
+    fclose(tempFile);
+
+    // Replace the original file with the temp file
+    if (isDeleted) {
+        remove(tablePath);              // Delete the original file
+        rename("temp.csv", tablePath);  // Rename temp file to original name
+        printf("The table %s has been updated successfully.\n", TABLENAMES[tableSelected]);
+    } else {
+        printf("No record with ID %s was found in the table.\n", searchID);
+        remove("temp.csv"); // Delete the temporary file since no changes were made
+    }
+}
+
+
 void searchRecord();

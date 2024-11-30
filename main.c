@@ -88,6 +88,14 @@ int main() {
                 printf("\n You Selected: Create Records");
                 createRecord(TABLE_NAMES, NoTables);
                 break;
+            case 9:
+                printf("\n You Selected: Create Records");
+                updateRecord(TABLE_NAMES, NoTables);
+                break;
+            case 10:
+                printf("\n You Selected: Delete Records");
+                deleteRecord(TABLE_NAMES, NoTables);
+                break;
             case 0:
                 return 0;
                 break;  
