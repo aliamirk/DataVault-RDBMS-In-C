@@ -3,8 +3,7 @@
 
 void displayRecords(char TABLENAMES[][200], int NoTables);
 void createRecord(char TABLENAMES[][200], int NoTables);
-void deleteRecord();
-void updateRecord();
-void searchRecord();
+void deleteRecord(char TABLENAMES[][200], int NoTables);
+void searchRecord(char TABLENAMES[][200], int NoTables);
 
 #endif

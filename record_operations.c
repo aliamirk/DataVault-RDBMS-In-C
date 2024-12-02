@@ -9,12 +9,6 @@
 #include "library-functions.h"
 #include "table_operations.h"
 
-// This function displays all the records in the selected table.
-// void displayRecords(char TABLENAMES[][200], int NoTables){
-//     int tableSelected = displayTables(TABLENAMES, NoTables); // table index in array
-//     char tablePath = TABLENAMES[tableSelected]; // string containing table path
-//     printf("\nIn addRecord(): Table %s\n", tablePath);
-// }
 
 
 void displayRecords(char TABLENAMES[][200], int NoTables) {
@@ -34,15 +28,15 @@ void displayRecords(char TABLENAMES[][200], int NoTables) {
 
     char buffer[1024];  // Buffer to read lines
     int recordNo = 0;   // Record index
-    int attributeNo = 0; // Attribute index
+    // int attributeNo; // Attribute index
 
     // Read the first line (Schema line)
     if (fgets(buffer, sizeof(buffer), fp)) {
         char *token;
-        attributeNo = 0;
+        // attributeNo = 0;
 
         // Display the table header
-        printf("\n%-10s", "Record No"); // Header for record number
+        printf("\n%-10s", "#.No"); // Header for record number
         token = strtok(buffer, ",");
         while (token != NULL) {
             printf("%-20s", token); // Align each attribute column
@@ -82,16 +76,6 @@ void displayRecords(char TABLENAMES[][200], int NoTables) {
 
 
 
-// void createRecord(char TABLENAMES[][200], int NoTables){
-//     int tableSelected = displayTables(TABLENAMES, NoTables); // table index in array
-//     char tablePath[300]; 
-//     // Create Table Path
-//     snprintf(tablePath, sizeof(tablePath), "%s%s", "/Users/apple/Desktop/", TABLENAMES[tableSelected]);
-//     printf("\nAdding records to the Table: %s\n", tablePath);
-
-
-
-// }
 
 
 // Function to create a new record in the selected table (CSV file)
@@ -245,4 +229,114 @@ void deleteRecord(char TABLENAMES[][200], int NoTables) {
 }
 
 
-void searchRecord();
+// Function to search for a record by ID and store the record data in an array
+void searchRecord(char TABLENAMES[][200], int NoTables) {
+    int tableSelected = displayTables(TABLENAMES, NoTables); // Get table index
+    char tablePath[300];
+
+    // Construct the full path of the CSV file
+    snprintf(tablePath, sizeof(tablePath), "%s%s", "/Users/apple/Desktop/", TABLENAMES[tableSelected]);
+
+    // Get Search ID from the User
+    clearInputBuffer();
+    char searchID[50];
+    printf("\nEnter ID of the Record to Search: ");
+    fgets(searchID, sizeof(searchID), stdin);
+    searchID[strcspn(searchID, "\n")] = '\0'; // Remove newline character
+
+    // Open the file for reading
+    FILE *file = fopen(tablePath, "r");
+    if (!file) {
+        printf("Error: Could not open file %s.\n", tablePath);
+        return;
+    }
+
+    // Read schema (first line) from the file
+    char schemaLine[1000];
+    if (!fgets(schemaLine, sizeof(schemaLine), file)) {
+        printf("Error: Could not read schema from the file.\n");
+        fclose(file);
+        return;
+    }
+
+    // Parse schema into an array
+    char *schema[100];
+    int attributeCount = 0;
+    char *token = strtok(schemaLine, ",");
+    while (token) {
+        schema[attributeCount++] = strdup(token);
+        token = strtok(NULL, ",");
+    }
+
+    // Array to store the record data as "AttributeName: Value"
+    char *recordData[attributeCount];
+    int found = 0;
+
+    // Search for the record by ID
+    char line[1000];
+    while (fgets(line, sizeof(line), file)) {
+        char *recordValues[100];
+        int valueIndex = 0;
+
+        // Parse the record's values
+        char *valueToken = strtok(line, ",");
+        while (valueToken) {
+            recordValues[valueIndex++] = strdup(valueToken);
+            valueToken = strtok(NULL, ",");
+        }
+
+        // Check if the record matches the search ID
+        if (strcmp(recordValues[0], searchID) == 0) {
+            found = 1;
+
+            // Store the record data as "AttributeName: Value"
+            for (int i = 0; i < attributeCount; i++) {
+                // Allocate memory for the "AttributeName: Value" format
+                size_t length = strlen(schema[i]) + strlen(recordValues[i]) + 4; // For ": " and null terminator
+                recordData[i] = malloc(length * sizeof(char));
+
+                // Format and store the data
+                snprintf(recordData[i], length, "%s: %s", schema[i], recordValues[i]);
+            }
+            break;
+        }
+
+        // Free memory for the current record values
+        for (int i = 0; i < valueIndex; i++) {
+            free(recordValues[i]);
+        }
+    }
+
+    fclose(file);
+
+    if (!found) {
+        printf("\nNo record with ID %s was found.\n", searchID);
+    } else {
+        // Print the record data in the array format (for debugging purposes)
+        printf("\nRecord Found (stored in array format):\n");
+        printf("\n----------------------------------------------\n");
+        for (int i = 0; i < attributeCount - 1; i++) {
+            printf("%s  ", recordData[i]);
+        }
+        char *temp = recordData[attributeCount - 1];
+        char *newline_pos = strchr(temp, '\n'); // Find the newline character
+
+        if (newline_pos) {
+        // Shift characters to remove the newline before the colon
+        memmove(newline_pos, newline_pos + 1, strlen(newline_pos)); // Move characters to remove \n
+        }
+        printf("%s", temp);
+        printf("---------------------------------------------\n");
+
+        // Free memory for record data
+        for (int i = 0; i < attributeCount; i++) {
+            free(recordData[i]);
+        }
+    }
+
+    // Free memory for schema
+    for (int i = 0; i < attributeCount; i++) {
+        free(schema[i]);
+    }
+}
+

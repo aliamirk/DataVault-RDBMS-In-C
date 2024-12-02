@@ -81,7 +81,7 @@ int main() {
                 main();
                 break;
             case 7:
-                printf("\n You Selected: Display Records");
+                printf("\nYou Selected: Display Records");
                 displayRecords(TABLE_NAMES, NoTables);
                 break;
             case 8:
@@ -89,15 +89,15 @@ int main() {
                 createRecord(TABLE_NAMES, NoTables);
                 break;
             case 9:
-                printf("\n You Selected: Create Records");
-                updateRecord(TABLE_NAMES, NoTables);
+                printf("\nYou Selected: Search Records");
+                searchRecord(TABLE_NAMES, NoTables);
                 break;
             case 10:
-                printf("\n You Selected: Delete Records");
+                printf("\nYou Selected: Delete Records");
                 deleteRecord(TABLE_NAMES, NoTables);
                 break;
             case 0:
-                return 0;
+                exit(0);
                 break;  
             default:
                 return 0;
