@@ -34,12 +34,12 @@ void displayMenu() {
     printf(" |                                                           |\n");
     printf(" |                   7.  Display Records                     |\n");
     printf(" |                   8.  Add a New Record                    |\n");
-    printf(" |                   9.  Update a Record                     |\n");
+    printf(" |                   9.  Search a Record                     |\n");
     printf(" |                   10. Delete a Record                     |\n");
     printf(" |                                                           |\n");
     printf(" =============================================================\n");
     printf(" |                                                           |\n");
-    printf(" | 0. Exit                                                   |\n");
+    printf(" |                         0. Exit                           |\n");
     printf(" |                                                           |\n");
     printf(" =============================================================\n");
     printf("\nEnter your choice: ");

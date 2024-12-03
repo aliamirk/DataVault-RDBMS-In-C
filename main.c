@@ -97,6 +97,7 @@ int main() {
                 deleteRecord(TABLE_NAMES, NoTables);
                 break;
             case 0:
+                printf("\nSaving Records... Updating Tables..\nProgram Exiting Bye!\n\n");
                 exit(0);
                 break;  
             default:
